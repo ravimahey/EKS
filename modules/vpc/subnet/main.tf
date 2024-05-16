@@ -1,11 +1,13 @@
 
-resource "aws_subnet" "public" {
+# AWS Availability Zones
+data "aws_availability_zones" "available_zones" {}
+
+resource "aws_subnet" "subnet" {
   count             = length(data.aws_availability_zones.available_zones.names)
   cidr_block        = cidrsubnet(var.cidr, var.subnet_bits, count.index)
-  vpc_id            = aws_vpc.vpc.id
+  vpc_id            = var.vpc_id
   availability_zone = data.aws_availability_zones.available_zones.names[count.index]
   tags = {
-    Name       = "${var.cluster_prefix}-public-subnet-${count.index + 1}"
-    Visibility = "Public"
+    Name       = "${var.cluster_prefix}-${lower(var.subnet_type)}-subnet-${count.index + 1}"
   }
 }
