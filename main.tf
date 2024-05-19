@@ -1,13 +1,13 @@
 module "vpc" {
   source = "./modules/vpc"
-  cluster_prefix = "${var.cluster_prefix}-test"
+  cluster_prefix = "${var.cluster_prefix}"
   cidr = var.cidr
   subnet_bits = var.subnet_bits
 }
 
 module "eks" {
   source = "./modules/eks"
-  cluster_prefix = "${var.cluster_prefix}-test"
+  cluster_prefix = "${var.cluster_prefix}"
   kubernetes_version = var.kubernetes_version
 
   private_subnet_ids = module.vpc.private_subnet_ids
