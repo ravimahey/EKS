@@ -13,10 +13,9 @@ module "public_subnets" {
   cluster_prefix = var.cluster_prefix
   vpc_id         = aws_vpc.vpc.id
   subnet_type    = "public"
-  subnet_bits    = var.subnet_bits
   cidr           = var.cidr
-  offset = 0
-
+  subnet_bits    = var.subnet_bits
+  offset         = 0
 }
 
 module "private_subnet" {
@@ -24,8 +23,9 @@ module "private_subnet" {
   cluster_prefix = var.cluster_prefix
   vpc_id         = aws_vpc.vpc.id
   subnet_type    = "private"
-  subnet_bits    = var.subnet_bits
   cidr           = var.cidr
+  subnet_bits    = var.subnet_bits
+  offset          = 1
 }
 
 module "storage_subnet" {
@@ -33,8 +33,9 @@ module "storage_subnet" {
   cluster_prefix = var.cluster_prefix
   vpc_id         = aws_vpc.vpc.id
   subnet_type    = "storage"
-  subnet_bits    = var.subnet_bits
   cidr           = var.cidr
+  subnet_bits    = var.subnet_bits
+  offset         = 2
 }
 
 
@@ -64,7 +65,7 @@ module "private_route_table" {
   source           = "./route_table"
   cluster_prefix   = var.cluster_prefix
   vpc_id           = aws_vpc.vpc.id
-  subnet_ids       = module.private_subnet.
+  subnet_ids       = module.private_subnet.subnet_ids
   route_table_type = "private"
 }
 

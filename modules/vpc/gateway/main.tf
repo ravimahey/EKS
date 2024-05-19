@@ -25,6 +25,4 @@ resource "aws_nat_gateway" "this" {
   tags = {
       Name = "${var.cluster_prefix}-nat-gateway"
     }
-
-  depends_on = [aws_internet_gateway.this]
 }
