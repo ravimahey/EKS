@@ -18,7 +18,7 @@ module "public_subnets" {
   offset         = 0
 }
 
-module "private_subnet" {
+module "private_subnets" {
   source         = "./subnet"
   cluster_prefix = var.cluster_prefix
   vpc_id         = aws_vpc.vpc.id
@@ -28,7 +28,7 @@ module "private_subnet" {
   offset          = 1
 }
 
-module "storage_subnet" {
+module "storage_subnets" {
   source         = "./subnet"
   cluster_prefix = var.cluster_prefix
   vpc_id         = aws_vpc.vpc.id
@@ -51,29 +51,38 @@ module "nat_gateway" {
   cluster_prefix = var.cluster_prefix
   vpc_id         = aws_vpc.vpc.id
   gateway_type   = "nat"
+  subnet_id = module.public_subnets.subnet_ids[0]
+}
+
+output "gwi" {
+  value =  module.internet_gateway.internet_gateway_id
 }
 
 module "public_route_table" {
   source           = "./route_table"
   cluster_prefix   = var.cluster_prefix
   vpc_id           = aws_vpc.vpc.id
-  subnet_ids       = module.public_subnet.subnet_ids
+  subnet_ids       = module.public_subnets.subnet_ids
   route_table_type = "public"
+  internet_gateway_id = module.internet_gateway.internet_gateway_id
+
 }
 
 module "private_route_table" {
   source           = "./route_table"
   cluster_prefix   = var.cluster_prefix
   vpc_id           = aws_vpc.vpc.id
-  subnet_ids       = module.private_subnet.subnet_ids
+  subnet_ids       = module.private_subnets.subnet_ids
   route_table_type = "private"
+  nat_gateway_id = module.nat_gateway.nat_gateway_id
 }
 
 module "storage_route_table" {
   source           = "./route_table"
   cluster_prefix   = var.cluster_prefix
   vpc_id           = aws_vpc.vpc.id
-  subnet_ids       = module.storage_subnet
+  subnet_ids       = module.storage_subnets.subnet_ids
   route_table_type = "private"
+  nat_gateway_id   =  module.nat_gateway.nat_gateway_id
 }
 

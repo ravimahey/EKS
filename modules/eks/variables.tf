@@ -2,13 +2,12 @@
 variable "cluster_prefix" {
   description = "To apply generic naming to EKS Cluster"
   type        = string
-  default     = "source4learn"
 }
 
 variable "kubernetes_version" {
   description = "Kubernetes version for EKS Cluster"
   type        = string
-  default     = "1.19"
+  default     = "1.29"
 }
 
 variable "eks_cluster_enabled_log_types" {
