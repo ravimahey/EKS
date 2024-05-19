@@ -36,3 +36,5 @@ override.tf.json
 # example: *tfplan*
 
 kubeconfig/*
+provider.tf
+backend.tf
